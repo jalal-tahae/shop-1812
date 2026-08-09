@@ -1,3 +1,5 @@
+
+// api call functions
 const getAllProducts = async () => {
   let result = [];
 
@@ -9,6 +11,9 @@ const getAllProducts = async () => {
   return result;
 };
 
+// =====================================================
+// =====================================================
+// initial codes
 async function initMainPage() {
   const allProducts = await getAllProducts();
 
@@ -31,6 +36,20 @@ function showToast(text) {
   }).showToast();
 }
 
+function handleAClick(event) {
+  event.preventDefault();
+
+  const target = event.currentTarget;
+  const href = target.getAttribute("href");
+
+  history.pushState({}, "", href);
+
+  router();
+}
+
+// ===========================================================
+// ===========================================================
+// render functions
 function renderProducts(list) {
   const result = list
     .map((item) => {
@@ -100,18 +119,13 @@ function renderProducts(list) {
     })
     .join("");
 
-  document.getElementById("root").innerHTML = result;
-}
+  const content = `
+      <div class="grid grid-cols-4 gap-2">
+        ${result}
+      </div>
+    `;
 
-function handleAClick(event) {
-  event.preventDefault();
-
-  const target = event.currentTarget;
-  const href = target.getAttribute("href");
-
-  history.pushState({}, "", href);
-
-  renderAllProductsPage();
+  document.getElementById("root").innerHTML = content;
 }
 
 async function renderAllProductsPage() {
@@ -185,5 +199,130 @@ async function renderAllProductsPage() {
     })
     .join("");
 
-  document.getElementById("root").innerHTML = result;
+  const content = `
+      <div class="grid grid-cols-4 gap-2">
+        ${result}
+      </div>
+    `;
+
+  document.getElementById("root").innerHTML = content;
+}
+
+function renderAboutPage() {
+  const content = `
+    <div>
+      ABOUT US PAGE
+    </div>
+  `;
+  document.getElementById("root").innerHTML = content;
+}
+
+function renderLoginPage() {
+  const content = `
+  <div class="min-h-screen w-full bg-gray-50 flex items-center justify-center px-4 py-12">
+
+  <div class="w-full max-w-md">
+
+    <!-- Login Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+
+      <!-- Title -->
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">
+          ورود به حساب کاربری
+        </h1>
+
+        <p class="mt-2 text-sm text-gray-500">
+          برای ورود، اطلاعات خود را وارد کنید
+        </p>
+      </div>
+
+
+      <!-- Form -->
+      <form onsubmit="handleLoginSubmit" class="space-y-5">
+
+        <!-- Username -->
+        <div>
+          <label
+            for="username"
+            class="block mb-2 text-sm font-medium text-gray-700"
+          >
+            نام کاربری
+          </label>
+
+          <input
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            placeholder="نام کاربری خود را وارد کنید"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          />
+        </div>
+
+
+        <!-- Password -->
+        <div>
+          <label
+            for="password"
+            class="block mb-2 text-sm font-medium text-gray-700"
+          >
+            رمز عبور
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="رمز عبور خود را وارد کنید"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          />
+        </div>
+
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 active:bg-blue-800"
+        >
+          ورود
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+  `;
+
+  document.getElementById("root").innerHTML = content;
+}
+
+
+// ==================================================
+// ==================================================
+// router
+function router() {
+  console.log(location);
+
+  const pathName = location.pathname;
+
+  switch (pathName) {
+    case "/products":
+      renderAllProductsPage();
+      break;
+    case "/about":
+      renderAboutPage();
+      break;
+    case "/login":
+      renderLoginPage();
+      break;
+    default:
+      break;
+  }
 }
