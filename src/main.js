@@ -35,7 +35,7 @@ function handleDeleteProduct(productId) {
 }
 
 async function handleEditProduct(id) {
-  const productData = await getSingleProduct(id);
+  // const productData = await getSingleProduct(id);
 
   console.log(productData);
 
@@ -662,8 +662,8 @@ function productDetail(event, address) {
 
 
 
-async function getSingleProduct(id) {
-  const product = await getSingleProduct(id);
+ async function productrender(id) {
+ const product = await getSingleProduct(id);
 
   const result =`
       <a onclick="productDetail(event,'/product/${item.id}')">
@@ -739,7 +739,7 @@ async function getSingleProduct(id) {
     `;
 
   document.getElementById("root").innerHTML = content;
-}
+ }
 
 
 
