@@ -46,15 +46,16 @@
             </a>
 
             <a
-              href="/contact"
+              href="/cart"
+              onclick="handleAClick(event)"
               class="text-sm font-medium text-gray-700 transition hover:text-blue-600"
             >
-              ارتباط با ما
+              سبد خرید
             </a>
           </nav>
 
           <!-- Desktop Auth -->
-          <div class="hidden items-center gap-3 lg:flex">
+          <div class="hidden items-center gap-3 lg:flex" id="auth-container">
             <a
               onclick="handleAClick(event)"
               href="/login"
