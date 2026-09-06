@@ -13,7 +13,7 @@ if (token) {
 }
 
 // api call functions
-const getAllProducts = async () => {
+var getAllProducts = async () => {
   let result = [];
   await fetch("https://fakestoreapi.com/products")
     .then((res) => res.json())
@@ -367,7 +367,7 @@ function renderProducts(list) {
     .join("");
 
   const content = `
-      <div class="grid grid-cols-4 gap-2">
+      <div class="grid lg:grid-cols-4 gap-2 sm:grid-cols-2">
         ${result}
       </div>
     `;
@@ -464,9 +464,9 @@ async function renderCartPage() {
     .join("");
 
   const content = `
-    <div class="grid grid-cols-4 gap-2">
-      ${result}
-    </div>
+      <div class="grid lg:grid-cols-4 gap-2 sm:grid-cols-2">
+        ${result}
+      </div>
   `;
 
   document.getElementById("root").innerHTML = content;
@@ -547,7 +547,7 @@ async function renderAllProductsPage() {
     .join("");
 
   const content = `
-      <div class="grid grid-cols-4 gap-2">
+      <div class="grid lg:grid-cols-4 gap-2 sm:grid-cols-2">
         ${result}
       </div>
     `;
@@ -928,7 +928,7 @@ async function productrender(id) {
       `;
 
   const content = `
-      <div class="grid grid-cols-4 gap-2">
+      <div class="grid lg:grid-cols-4 gap-2 sm:grid-cols-2">
         ${result}
       </div>
     `;
