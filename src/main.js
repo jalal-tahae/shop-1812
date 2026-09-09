@@ -25,7 +25,7 @@ var getAllProducts = async () => {
 
 const getSingleProduct = async (id) => {
   return await fetch(`https://fakestoreapi.com/products/${id}`).then((res) =>
-    res.json()
+    res.json(),
   );
 };
 
@@ -289,7 +289,10 @@ function renderProducts(list) {
       const foundItem = cart?.find((cartItem) => item.id == cartItem.id);
 
       return `
-        <div class="max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <div class="max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+       >
+
+         <a href="/products/${item.id}" onclick="handleAClick(event)">
 
         <!-- Product Image -->
         <div class="flex h-72 items-center justify-center bg-gray-50 p-6">
@@ -361,6 +364,7 @@ function renderProducts(list) {
           </div>
       
         </div>
+        </a>
       </div>
         `;
     })
@@ -378,7 +382,7 @@ function renderProducts(list) {
 async function renderCartPage() {
   const allProducts = await getAllProducts();
   const cart = (JSON.parse(localStorage.getItem("cart")) ?? []).map(
-    (item) => item.id
+    (item) => item.id,
   );
 
   const cartData = [];
@@ -801,6 +805,10 @@ function router() {
     case "/cart":
       renderCartPage();
       break;
+    case "/src/":
+      initMainPage();
+      break;
+     
 
     default:
       break;
@@ -859,79 +867,94 @@ async function productrender(id) {
   const product = await getSingleProduct(id);
 
   console.log("product details:", product);
-
+  const cart = JSON.parse(localStorage.getItem("cart"));
+const foundItem = cart?.find((cartItem) => product.id == cartItem.id);
   const result = `
-      <div>
-        <div class="max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+  
+  <div
+  class="flex w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+>
+  <!-- Product Image -->
+  <div
+    class="flex w-64 shrink-0 items-center justify-center bg-gray-50 p-6"
+  >
+    <img
+      src="${product.image}"
+      alt="${product.title}"
+      class="max-h-56 max-w-full object-contain"
+    />
+  </div>
 
-        <!-- Product Image -->
-        <div class="flex h-72 items-center justify-center bg-gray-50 p-6">
-          <img
-            src="${product.image}"
-            alt="${product.title}"
-            class="max-h-full object-contain"
-          />
-        </div>
-      
-        <!-- Content -->
-        <div class="space-y-4 p-6">
-      
-          <!-- Category -->
-          <span class="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-            ${product.category}
-          </span>
-      
-          <!-- Title -->
-          <h2 class="line-clamp-2 text-lg font-bold text-gray-900">
-            ${product.title}
-          </h2>
-      
-          <!-- Description -->
-          <p class="line-clamp-3 text-sm text-gray-600">
-            ${product.description}
-          </p>
-      
-          <!-- Rating -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="text-sm font-medium text-gray-700">
-                ${product.rating.rate}
-              </span>
-      
-              <span class="text-sm text-gray-500">
-                (${product.rating.count})
-              </span>
-            </div>
-          </div>
-      
-          <!-- Price + Button -->
-          <div class="flex items-center justify-between pt-2">
-      
-            <div>
-              <p class="text-2xl font-bold text-gray-900">
-                $${product.price}
-              </p>
-            </div>
-      
-            <button
-            onclick="addToCart('${item.id}')"
-              class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-            >
-              Add to Cart
-            </button>
-      
-          </div>
-      
-        </div>
-      </div>
-      </div>  
-      `;
+  <!-- Content -->
+  <div class="flex flex-1 flex-col justify-between space-y-4 p-6">
+
+    <!-- Category -->
+    <span
+      class="w-fit rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
+    >
+      ${product.category}
+    </span>
+
+    <!-- Title -->
+    <h2 class="line-clamp-2 text-lg font-bold text-gray-900">
+      ${product.title}
+    </h2>
+
+    <!-- Description -->
+    <p class="line-clamp-3 text-sm leading-6 text-gray-600">
+      ${product.description}
+    </p>
+
+    <!-- Rating -->
+    <div class="flex items-center gap-2">
+      <span class="text-sm font-medium text-gray-700">
+        ⭐ ${product.rating.rate}
+      </span>
+
+      <span class="text-sm text-gray-500">
+        (${product.rating.count} reviews)
+      </span>
+    </div>
+
+    <!-- Price + Button -->
+    <div class="flex items-center justify-between pt-2">
+
+      <p class="text-2xl font-bold text-gray-900">
+        $${product.price}
+      </p>
+
+            ${
+              foundItem
+                ? `
+                <div class="flex gap-2">
+                  <button class="px-2 py-1 rounded-md bg-red-500 text-white"
+                  onclick="removeFromCart('${product.id}')">-</button>
+                  <span>${foundItem.quantity}</span>
+                  <button class="px-2 py-1 rounded-md bg-blue-500 text-white" onclick="addToCart('${product.id}')">+</button>
+                </div>`
+                : `<button
+            onclick="addToCart('${product.id}')"
+            class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
+          >
+            Add to Cart
+          </button>`
+            }
+
+    </div>
+
+  </div>
+</div>
+  `;
 
   const content = `
-      <div class="grid lg:grid-cols-4 gap-2 sm:grid-cols-2">
+      <div >
         ${result}
       </div>
     `;
 
   document.getElementById("root").innerHTML = content;
+
+        
+       // router();
+
 }
