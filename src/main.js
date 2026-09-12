@@ -46,9 +46,9 @@ function handleDeleteProduct(productId) {
 }
 
 async function handleEditProduct(id) {
-  // const productData = await getSingleProduct(id);
+   const productData = await getSingleProduct(id);
 
-  console.log(productData);
+   console.log(productData);
 
   const root = document.getElementById("root");
 
@@ -87,8 +87,8 @@ async function handleEditProduct(id) {
 }
 
 async function handleAddProduct(event) {
-  debugger;
-  // console.log(productData);
+  
+  event.stopPropagation();
 
   const root = document.getElementById("root");
 
@@ -123,8 +123,9 @@ async function handleAddProduct(event) {
 }
 
 function handleAddProductForm(event) {
-  debugger;
+  
   event.preventDefault();
+  event.stopPropagation();
   const form = event.currentTarget;
 
   const formData = new FormData(form);
@@ -155,6 +156,7 @@ function handleAddProductForm(event) {
 function handleEditProductForm(event) {
   // console.log("function call");
   event.preventDefault();
+  event.stopPropagation();
   const form = event.currentTarget;
 
   const formData = new FormData(form);
@@ -210,7 +212,7 @@ function showToast(text, background) {
 
 function handleAClick(event) {
   event.preventDefault();
-
+  event.stopPropagation();
   const target = event.currentTarget;
   const href = target.getAttribute("href");
 
@@ -219,7 +221,9 @@ function handleAClick(event) {
   router();
 }
 
-const addToCart = (productId) => {
+const addToCart = (event, productId) => {
+  // event.preventDefault();
+  // event.stopPropagation();
   console.log(productId);
 
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -260,7 +264,10 @@ const addToCart = (productId) => {
   router();
 };
 
-const removeFromCart = (productId) => {
+const removeFromCart = (event, productId) => {
+  event.preventDefault();
+  event.stopPropagation();
+
   const cart = JSON.parse(localStorage.getItem("cart"));
 
   if (cart) {
@@ -346,18 +353,27 @@ function renderProducts(list) {
             ${
               foundItem
                 ? `
-                <div class="flex gap-2">
-                  <button class="px-2 py-1 rounded-md bg-red-500 text-white"
-                  onclick="removeFromCart('${item.id}')">-</button>
-                  <span>${foundItem.quantity}</span>
-                  <button class="px-2 py-1 rounded-md bg-blue-500 text-white" onclick="addToCart('${item.id}')">+</button>
+                <div class="flex gap-2 addbsk" id="addbsk">
+                  <button
+  onclick="removeFromCart(event, '${item.id}')"
+  class="px-2 py-1 rounded-md bg-red-500 text-white"
+>
+  -
+</button>
+                 <span>${foundItem.quantity}</span>
+                 <button
+  onclick="addToCart(event, '${item.id}')"
+  class="px-2 py-1 rounded-md bg-blue-500 text-white"
+>
+  +
+</button>
                 </div>`
                 : `<button
-            onclick="addToCart('${item.id}')"
-            class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-          >
-            Add to Cart
-          </button>`
+  onclick="addToCart(event, '${item.id}')"
+  class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
+>
+  Add to Cart
+</button>`
             }
             
       
@@ -397,6 +413,7 @@ async function renderCartPage() {
   });
 
   const result = cartData
+
     .map((item) => {
       return `
     <a href="/products/${item.id}" onclick="handleAClick(event)">
@@ -451,12 +468,31 @@ async function renderCartPage() {
             </p>
           </div>
     
-          <button
-          onclick="addToCart('${item.id}')"
-            class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-          >
-            Add to Cart
-          </button>
+            ${
+              foundItem
+                ? `
+                <div class="flex gap-2 addbsk" id="addbsk">
+                                  <button
+  onclick="removeFromCart(event, '${item.id}')"
+  class="px-2 py-1 rounded-md bg-red-500 text-white"
+>
+  -
+</button>
+                 <span>${foundItem.quantity}</span>
+                 <button
+  onclick="addToCart(event, '${item.id}')"
+  class="px-2 py-1 rounded-md bg-blue-500 text-white"
+>
+  +
+</button>
+                </div>`
+                : `<button
+  onclick="addToCart(event, '${item.id}')"
+  class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
+>
+  Add to Cart
+</button>`
+            }
     
         </div>
     
@@ -479,8 +515,11 @@ async function renderCartPage() {
 async function renderAllProductsPage() {
   const allProducts = await getAllProducts();
 
+  const cart = JSON.parse(localStorage.getItem("cart"));
+
   const result = allProducts
     .map((item) => {
+      const foundItem = cart?.find((cartItem) => item.id == cartItem.id);
       return `
       <a href="/products/${item.id}" onclick="handleAClick(event)">
         <div class="max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl">
@@ -534,12 +573,31 @@ async function renderAllProductsPage() {
               </p>
             </div>
       
-            <button
-            onclick="addToCart('${item.id}')"
-              class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-            >
-              Add to Cart
-            </button>
+            ${
+              foundItem
+                ? `
+                <div class="flex gap-2 addbsk" id="addbsk">
+                                  <button
+  onclick="removeFromCart(event, '${item.id}')"
+  class="px-2 py-1 rounded-md bg-red-500 text-white"
+>
+  -
+</button>
+                 <span>${foundItem.quantity}</span>
+                 <button
+  onclick="addToCart(event, '${item.id}')"
+  class="px-2 py-1 rounded-md bg-blue-500 text-white"
+>
+  +
+</button>
+                </div>`
+                : `<button
+  onclick="addToCart(event, '${item.id}')"
+  class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
+>
+  Add to Cart
+</button>`
+            }
       
           </div>
       
@@ -576,7 +634,7 @@ function renderLoginPage() {
     return;
   }
 
-  debugger;
+  
   const content = `
   <div class="min-h-screen w-full bg-gray-50 flex items-center justify-center px-4 py-12">
 
@@ -769,7 +827,7 @@ async function renderAdminDashboard() {
 // ==================================================
 // router
 function router() {
-  debugger;
+  
   const pathName = location.pathname;
   console.log(pathName);
 
@@ -808,7 +866,6 @@ function router() {
     case "/src/":
       initMainPage();
       break;
-     
 
     default:
       break;
@@ -818,7 +875,7 @@ function router() {
 
 function handleLoginSubmit(event) {
   event.preventDefault();
-
+  event.stopPropagation();
   const form = event.currentTarget;
 
   const formData = new FormData(form);
@@ -859,16 +916,17 @@ window.addEventListener("popstate", () => {
 
 function productDetail(event, address) {
   event.preventDefault();
+  event.stopPropagation();
   console.log(event, address);
 }
 
 async function productrender(id) {
-  debugger;
+  
   const product = await getSingleProduct(id);
 
   console.log("product details:", product);
   const cart = JSON.parse(localStorage.getItem("cart"));
-const foundItem = cart?.find((cartItem) => product.id == cartItem.id);
+  const foundItem = cart?.find((cartItem) => product.id == cartItem.id);
   const result = `
   
   <div
@@ -926,18 +984,18 @@ const foundItem = cart?.find((cartItem) => product.id == cartItem.id);
             ${
               foundItem
                 ? `
-                <div class="flex gap-2">
+                <div class="flex gap-2 addbsk" id="addbsk">
                   <button class="px-2 py-1 rounded-md bg-red-500 text-white"
                   onclick="removeFromCart('${product.id}')">-</button>
                   <span>${foundItem.quantity}</span>
                   <button class="px-2 py-1 rounded-md bg-blue-500 text-white" onclick="addToCart('${product.id}')">+</button>
                 </div>`
                 : `<button
-            onclick="addToCart('${product.id}')"
-            class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
-          >
-            Add to Cart
-          </button>`
+  onclick="addToCart(event, '${product.id}')"
+  class="rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700 active:scale-95"
+>
+  Add to Cart
+</button>`
             }
 
     </div>
@@ -954,7 +1012,7 @@ const foundItem = cart?.find((cartItem) => product.id == cartItem.id);
 
   document.getElementById("root").innerHTML = content;
 
-        
-       // router();
-
+  // router();
 }
+// let addbsk = document.getElementsByClassName("addbsk");
+// addbsk.stopPropagation();

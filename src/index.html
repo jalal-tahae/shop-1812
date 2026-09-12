@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,10 +12,10 @@
   <body>
     <!-- Header -->
     <header
-      class="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur"
+      class="sticky  z-50 border-b border-gray-200 bg-white/95 backdrop-blur"
     >
-      <div class="mx-auto h-40  lg:max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-20 items-center justify-between">
+      <div class="mx-auto h-55 md:h-25 lg:max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-50 md:h-20 items-center justify-between">
           <!-- Logo -->
           <a href="/" class="flex items-center gap-3 shrink-0">
             <div
@@ -27,92 +27,53 @@
           </a>
 
           <!-- Desktop Navigation -->
-        <!-- Mobile Menu -->
-         <div
-          id="mobileMenu"
-          class=" border-t border-gray-100 py-1"
-        >
-          <nav class="flex flex-col gap-1  lg:hidden">
-            <a
-              onclick="handleAClick(event)"
-              href="/products"
-              class="rounded-lg px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 hover:text-blue-600"
-            >
-              همه محصولات
-            </a>
-
-            <a
-              onclick="handleAClick(event)"
-              href="/about"
-              class="rounded-lg px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 hover:text-blue-600"
-            >
-              درباره ما
-            </a>
-
-            <a
-              href="/contact"
-              class="rounded-lg px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 hover:text-blue-600"
-            >
-              ارتباط با ما
-            </a>
-
-            <!-- Mobile Auth -->
-        
-          <div id="auth-container" class=" items-center  lg:flex mt-3 grid grid-cols-2 gap-3 border-t border-gray-100 pt-4">
+          <!-- Mobile Menu -->
+          <div id="menu" class="border-t border-gray-100 py-1  lg:flex-row">
+            <nav class="flex flex-col gap-1 md:flex-row items-center">
               <a
                 onclick="handleAClick(event)"
-                href="/login"
-                class="rounded-lg border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-50     hover:text-blue-600"
+                href="/products"
+                class="rounded-lg px-4 py-3 hover:bg-gray-50 text-sm font-medium text-gray-700 transition hover:text-blue-600"
               >
-                ورود
+                همه محصولات
               </a>
               <a
-                href="/register"
-                class="rounded-lg border bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-blue-700 "
+                onclick="handleAClick(event)"
+                href="/about"
+                class="rounded-lg px-4 py-3 hover:bg-gray-50 text-sm font-medium text-gray-700 transition hover:text-blue-600"
               >
-                ثبت نام
+                درباره ما
               </a>
-            </div>
-          </nav>
+              <a
+                href="/contact"
+                class="rounded-lg px-4 py-3 hover:bg-gray-50 text-sm font-medium text-gray-700 transition hover:text-blue-600"
+              >
+                ارتباط با ما
+              </a>
+              <div
+                id="auth-container"
+                class="flex  border-gray-100 "
+              >
+                <a
+                  onclick="handleAClick(event)"
+                  href="/login"
+                  class="rounded-lg border border-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-50 hover:text-blue-600"
+                >
+                  ورود
+                </a>
+                <a
+                  href="/register"
+                  class="rounded-lg border bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-blue-700"
+                >
+                  ثبت نام
+                </a>
+              </div>
+            </nav>
+          </div>
         </div>
-
-
-
-          <nav class="hidden items-center gap-8 lg:flex">
-            <a
-              onclick="handleAClick(event)"
-              href="/products"
-              class="text-sm font-medium text-gray-700 transition hover:text-blue-600"
-            >
-              همه محصولات
-            </a>
-            <a
-              onclick="handleAClick(event)"
-              href="/about"
-              class="text-sm font-medium text-gray-700 transition hover:text-blue-600"
-            >
-              درباره ما
-            </a>
-            <a
-              href="/contact"
-              class="text-sm font-medium text-gray-700 transition hover:text-blue-600"
-            >
-              ارتباط با ما
-            </a>
-          </nav>
-          <!-- Desktop Auth -->
-
-          <!-- Mobile Menu Button -->
-
-        </div>
-
-
-
       </div>
     </header>
-
     <div id="root"></div>
-
     <script
       type="text/javascript"
       src="/node_modules/toastify-js/src/toastify.js"
